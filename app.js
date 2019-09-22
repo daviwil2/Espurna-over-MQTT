@@ -1,5 +1,9 @@
 'use strict';
 
+// load the sentry.io reporting module and connect to the local sentry.io onpremise instance
+const Sentry = require('@sentry/node');
+Sentry.init({ dsn: 'http://be763a9646a743aebc6d26fd2c169455@sentry.local:9000/1' });
+
 const Homey = require('homey');
 
 // get the ManagerSettings object which gives access to the methods to read and write settings
