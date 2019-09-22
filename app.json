@@ -1,0 +1,130 @@
+{
+  "id": "dev.homey.espurna",
+  "version": "1.0.0",
+  "compatibility": ">=2.0",
+  "sdk": 2,
+  "brandColor": "#99965E",
+  "name": {
+    "en": "Espurna over MQTT"
+  },
+  "description": {
+    "en": "Adds support for devices running Espurna firmware over MQTT."
+  },
+  "category": [ "lights", "appliances" ],
+  "tags": {
+    "en": [ "espurna", "sonoff", "H801" ]
+  },
+  "images": {
+    "large": "/assets/images/large.png",
+    "small": "/assets/images/small.png"
+  },
+  "permissions": [],
+  "author": { "email": "david@homey.dev", "name": "David Williamson" },
+  "contributors": {},
+  "contributing": {},
+  "bugs": {},
+  "signals": {},
+  "flow": {},
+  "drivers": [
+    {
+      "id": "SingleRelay",
+      "name": {
+        "en": "Single relay switch"
+      },
+      "class": "socket",
+      "capabilities": [ "onoff" ],
+      "images": {
+        "large": "/drivers/SingleRelay/assets/images/large.png",
+        "small": "/drivers/SingleRelay/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": { "next": "add_my_devices" },
+          "options": { "singular": true }
+        },
+        {
+          "id": "add_my_devices",
+          "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "type": "group",
+          "label": { "en": "MQTT settings" },
+          "children": [
+            {
+              "id": "MQTTtopic",
+              "type": "text",
+              "label": {"en": "Root topic for this relay"},
+              "value": "",
+              "pattern": "[^/]*"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "RGBLED",
+      "name": {
+        "en": "RGB LED lights"
+      },
+      "class": "light",
+      "capabilities": [ "onoff", "dim", "light_hue", "light_saturation" ],
+      "capabilitiesOptions": {
+        "onoff": {},
+        "dim": { "title": "brightness" },
+        "light_hue": { "title": "hue" },
+        "light_saturation": { "title": "saturation" }
+      },
+      "images": {
+        "large": "/drivers/RGBLED/assets/images/large.png",
+        "small": "/drivers/RGBLED/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": { "next": "add_my_devices" },
+          "options": { "singular": true }
+        },
+        {
+          "id": "add_my_devices",
+          "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "type": "group",
+          "label": { "en": "MQTT settings" },
+          "children": [
+            {
+              "id": "MQTTtopic",
+              "type": "text",
+              "label": {"en": "Root topic for this RGB LED controller"},
+              "value": "",
+              "pattern": "[^/]*"
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": { "en": "This RGB LED controller controls" },
+          "children": [
+            {
+              "id": "controls",
+              "type": "dropdown",
+              "label": {"en": "Controls"},
+              "values": [
+                {"id": "RGB", "label": {"en": "RGB on channels 1, 2 and 3"}},
+                {"id": "C4",  "label": {"en": "White LED on channel 4"}},
+                {"id": "C5",  "label": {"en": "White LED on channel 5"}}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

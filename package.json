@@ -1,0 +1,16 @@
+{
+  "name": "app.homey.espurna",
+  "version": "1.0.0",
+  "main": "app.js",
+  "dependencies": {
+    "homey-log": "^1.0.6",
+    "is-ip": "^2.0.0",
+    "mqtt": "^2.18.8"
+  },
+  "devDependencies": {},
+  "scripts": {},
+  "repository": {},
+  "author": "",
+  "license": "Apache-2.0",
+  "bugs": {}
+}
