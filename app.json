@@ -1,6 +1,6 @@
 {
-  "id": "name.williamson.david.espurna",
-  "version": "1.0.1",
+  "id": "Espurna-over-MQTT",
+  "version": "1.0.2",
   "compatibility": ">=2.0",
   "sdk": 2,
   "brandColor": "#99965E",
@@ -8,7 +8,7 @@
     "en": "Espurna over MQTT"
   },
   "description": {
-    "en": "Adds support for devices running Espurna firmware over MQTT."
+    "en": "Adds support for LED and relay switch devices running Espurna firmware over MQTT."
   },
   "category": [ "lights", "appliances" ],
   "tags": {
