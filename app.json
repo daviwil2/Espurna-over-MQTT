@@ -19,7 +19,10 @@
     "small": "/assets/images/small.png"
   },
   "permissions": [],
-  "author": { "email": "david@david.williamson.name", "name": "David Williamson" },
+  "author": {
+    "email": "daviwil2@users.noreply.github.com",
+    "name": "David Williamson"
+  },
   "contributors": {},
   "contributing": {},
   "bugs": {},
