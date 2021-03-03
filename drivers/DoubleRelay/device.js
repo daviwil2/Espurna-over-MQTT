@@ -1,4 +1,4 @@
-// device.js for SingleRelay
+// device.js for DoubleRelay
 
 'use strict';
 
@@ -40,7 +40,7 @@ var state, capabilities, settings, topics, rootTopic, controls, that;
 // get the Device object which gives access to the setCapabilityValue method inside an MQTT client connection object, where 'this' has different scope
 const { Device } = require('homey');
 
-class SingleRelay extends Homey.Device {
+class DoubleRelay extends Homey.Device {
 
   /// helper functions
 
@@ -71,8 +71,8 @@ class SingleRelay extends Homey.Device {
     return new Promise(function(resolve, reject){
 
       // check relay and value are in range
-      if (['0'].indexOf(relay) == -1){
-        return reject(new RangeError('relay can only be \'0\' for a single relay device'))
+      if (['0', '1'].indexOf(relay) == -1){
+        return reject(new RangeError('relay can only be \'0\' or \'1\' for a double relay device'))
       }; // if
       if (typeof value !== 'boolean'){
         return reject(new RangeError('value can only be boolean'))
@@ -142,7 +142,7 @@ class SingleRelay extends Homey.Device {
       rootTopic = this.getSettings().MQTTtopic;
 
       // populate the topics array with all the relevant topics/subtopics for an RGB LED controller
-      topics    = ['relay/0'];
+      topics    = ['relay/+']; // + is wildcard
       topics    = topics.map(function(subTopic){ return rootTopic+'/'+subTopic });
 
       // determine port and construct a connection object
@@ -171,7 +171,7 @@ class SingleRelay extends Homey.Device {
       }); // client.on connect
 
       // define event handler for MQTT 'message' events which are emitted when the MQTT client receives a publish packet
-      // we use these to set capability states for the device; for a single relay switch getCapabilities() returns [ 'onoff' ]
+      // we use these to set capability states for the device; for a double relay switch getCapabilities() returns [ 'onoff.1', 'onoff.2' ]
       // if changing settings using the Homey app then these will get called but are unnecessary as Homey will update
       // the relevant capability automatically; where these handlers are needed are where the device is changed outside
       // of Homey e.g. using another app or via it's web UI
@@ -191,20 +191,27 @@ class SingleRelay extends Homey.Device {
           message = (message === '1') ? true : false ;
 
           // trap for invalid topic[2]
-          if (typeof topic[2] !== 'string' || ['0'].indexOf(topic[2]) == -1){
-            Sentry.captureException(new RangeError('invalid topic[2], '+topic[2]+' received, \'0\' expected'));
+          if (typeof topic[2] !== 'string' || ['0', '1'].indexOf(topic[2]) == -1){
+            Sentry.captureException(new RangeError('invalid topic[2], '+topic[2]+' received, \'0\' or \'1\' expected'));
             return;
           }; // if
 
           // trap for mismatch between topic[2] (relay #) and properties of the state object
-          if (state.hasOwnProperty('onoff') === false){
-            Sentry.captureException(new RangeError('missing state property'));
+          if ( (topic[2] == '0' && state.hasOwnProperty('onoff.1') === false) || (topic[2] == '1' && state.hasOwnProperty('onoff.2') === false) ){
+            Sentry.captureException(new RangeError('invalid topic and/or missing state property'));
             return;
           }; // if
 
           // for relay 1 (relay/0) if current state is different to the message, set the state in the Homey app
-          if (topic[2] == '0' && state['onoff'] !== message){
-            that._setCapabilityValue('onoff', message)
+          if (topic[2] == '0' && state['onoff.1'] !== message){
+            that._setCapabilityValue('onoff.1', message)
+            .then(() => {})
+            .catch((err) => { Sentry.captureException(err) });
+          }; // if
+
+          // for relay 2 (relay/1) if current state is different to the message, set the state in the Homey app
+          if (topic[2] == '1' && state['onoff.2'] !== message){
+            that._setCapabilityValue('onoff.2', message)
             .then(() => {})
             .catch((err) => { Sentry.captureException(err) });
           }; // if
@@ -222,8 +229,9 @@ class SingleRelay extends Homey.Device {
         client.end(); // close the MQTT connection
       }); // client.on error
 
-      // register capability listeners and the functions we'll call for the single capability provided by this device
-      this.registerCapabilityListener('onoff', this._onCapabilityOnoff.bind(this));
+      // register capability listeners and the functions we'll call for each capability
+      this.registerCapabilityListener('onoff.1', this._onCapabilityOnoff_1.bind(this)); // relay/0
+      this.registerCapabilityListener('onoff.2', this._onCapabilityOnoff_2.bind(this)); // relay/1
 
     }) // .then _defaultSettings
     .catch((err) => { Sentry.captureException(err) }); // .catch _defaultSettings
@@ -287,7 +295,7 @@ class SingleRelay extends Homey.Device {
   /// internal capability handlers, each called by .registerCapabilityListener in onInit()
 
   // called when the Device has requested a state change (turn on or off) for relay/0 and is used to set the value via MQTT
-  _onCapabilityOnoff(value, opts, callback){
+  _onCapabilityOnoff_1(value, opts, callback){
 
     this._setCapabilityViaMQTT('0', value)
     .then(() => {
@@ -298,8 +306,21 @@ class SingleRelay extends Homey.Device {
       return callback(err, null)
     }); // .catch
 
-  }; // _onCapabilityOnoff
+  }; // _onCapabilityOnoff_1
+
+  _onCapabilityOnoff_2(value, opts, callback){
+
+    this._setCapabilityViaMQTT('1', value)
+    .then(() => {
+      return callback(null, value);
+    })
+    .catch((err) => {
+      Sentry.captureException(err);
+      return callback(err, null)
+    }); // .catch
+
+  }; // _onCapabilityOnoff_2
 
 }; // class
 
-module.exports = SingleRelay;
+module.exports = DoubleRelay;

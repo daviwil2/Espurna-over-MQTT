@@ -1,6 +1,6 @@
 {
-  "id": "dev.homey.espurna",
-  "version": "1.0.0",
+  "id": "name.williamson.david.espurna",
+  "version": "1.0.1",
   "compatibility": ">=2.0",
   "sdk": 2,
   "brandColor": "#99965E",
@@ -19,12 +19,38 @@
     "small": "/assets/images/small.png"
   },
   "permissions": [],
-  "author": { "email": "david@homey.dev", "name": "David Williamson" },
+  "author": { "email": "david@david.williamson.name", "name": "David Williamson" },
   "contributors": {},
   "contributing": {},
   "bugs": {},
   "signals": {},
-  "flow": {},
+  "flow": {
+    "actions": [
+      {
+        "id": "SingleRelay_on",
+        "title": { "en": "The switch has been turned on"},
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=SingleRelay"
+          }
+        ]
+      },
+      {
+        "id": "SingleRelay_off",
+        "title": { "en": "The switch has been turned off"},
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=SingleRelay"
+          }
+        ]
+      }
+    ],
+    "triggers": []
+  },
   "drivers": [
     {
       "id": "SingleRelay",
@@ -36,6 +62,45 @@
       "images": {
         "large": "/drivers/SingleRelay/assets/images/large.png",
         "small": "/drivers/SingleRelay/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": { "next": "add_my_devices" },
+          "options": { "singular": true }
+        },
+        {
+          "id": "add_my_devices",
+          "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "type": "group",
+          "label": { "en": "MQTT settings" },
+          "children": [
+            {
+              "id": "MQTTtopic",
+              "type": "text",
+              "label": {"en": "Root topic for this relay"},
+              "value": "",
+              "pattern": "[^/]*"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DoubleRelay",
+      "name": {
+        "en": "Double relay switch"
+      },
+      "class": "socket",
+      "capabilities": [ "onoff.1", "onoff.2" ],
+      "images": {
+        "large": "/drivers/DoubleRelay/assets/images/large.png",
+        "small": "/drivers/DoubleRelay/assets/images/small.png"
       },
       "pair": [
         {
