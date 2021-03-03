@@ -4,7 +4,7 @@ const Homey = require('homey');
 
 module.exports = [
 
-  // define API calls here
+  // define HTTP API calls here such that other applications can access this app
 
   /*
 	{

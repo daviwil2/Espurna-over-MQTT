@@ -4,7 +4,6 @@
 
 const Homey  = require('homey');
 const mqtt   = require('mqtt');
-const Sentry = require('@sentry/node'); // already called Sentry.init in app.js
 
 /// get the settings (MQTT server) into a local object
 

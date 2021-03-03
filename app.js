@@ -4,21 +4,12 @@
 
 const Homey = require('homey');
 
-// load the sentry.io reporting module and connect to the sentry.io remote instance
-const Sentry = require('@sentry/node');
-
 // get the ManagerSettings object which gives access to the methods to read and write settings
 const { ManagerSettings } = require('homey');
 
 class Espurna extends Homey.App {
 
 	onInit(){
-
-		// initialise Sentry error reporting if we have a dsn value set
-		if (Homey.env.HOMEY_LOG_URL && typeof Homey.env.HOMEY_LOG_URL == 'string' && Homey.env.HOMEY_LOG_URL !== ""){
-			this.log('valid dsn found in environment variables/env.json, initialising Sentry for error reporting')
-			Sentry.init({ dsn: Homey.env.HOMEY_LOG_URL });
-		}; // if
 
 		// get the keys
 		var keys = ManagerSettings.getKeys();
