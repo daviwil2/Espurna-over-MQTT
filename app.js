@@ -7,9 +7,16 @@ const Homey = require('homey');
 // get the ManagerSettings object which gives access to the methods to read and write settings
 const { ManagerSettings } = require('homey');
 
+const { Log } = require('homey-log');
+
 class Espurna extends Homey.App {
 
 	onInit(){
+
+		// enable logging to sentry if a URL is defined as an environment variable
+		// if enabled, if this app crashes due to an uncaughtException or unhandledRejection, a crash report
+		// will automatically be sent to Sentry
+		this.homeyLog = (Homey.env.HOMEY_LOG_URL !== null) ? new Log({ homey: this.homey }) : undefined ;
 
 		// get the keys
 		var keys = ManagerSettings.getKeys();
