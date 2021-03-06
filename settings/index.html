@@ -5,9 +5,6 @@
 
   <head>
     <script type="text/javascript" src="/homey.js" data-origin="settings"></script>
-    <script type="text/javascript" src="/manager/webserver/assets/js/jquery.js"></script>
-    <script type="text/javascript" src="lodash.min.js" data-origin="settings"></script>
-    <link rel="stylesheet" href="/manager/webserver/assets/css/font.awesome.css">
   </head>
 
   <body>
@@ -44,16 +41,16 @@
     // initialise the object with handles to the form fields
     const FIELDS = ['server', 'port', 'username', 'password'];
     var fields = {};
-    _.forEach(FIELDS, function(field){
+    FIELDS.forEach((field, index) => {
       fields[field] = document.getElementById(field)
-    }); // _.forEach
+    }); // .forEach
 
     var saveButton = document.getElementById('save');
     let error;
 
     // try to retrieve the field values from settings and populate the field values
     error = false;
-    _.forEach(FIELDS, function(field){
+    FIELDS.forEach((field, index) => {
       if (error === false){
         Homey.get(field, function(err, data) {
           if (err){
@@ -64,7 +61,7 @@
           }; // if
         }); // Homey.get
       }; // if
-    }); // _.forEach
+    }); // .forEach
 
     // trap for error
     if (error){ return Homey.alert(err) };
@@ -74,13 +71,13 @@
     saveButton.addEventListener('click', function(e){
 
       // iterate over the fields, retrieving the value from the form and storing in Homey
-      _.forEach(FIELDS, function(field){
+      FIELDS.forEach((field, index) => {
         if (error === false){
           Homey.set(field, fields[field].value, function( err ){
             if (err){ error = err };
           }); // Homey.set
         }; // if
-      }); // _.forEach
+      }); // .forEach
 
       // if we encountered an error tell the user, else show success dialog
       if (error !== false){
