@@ -1,6 +1,6 @@
 {
   "name": "com.github.noreply.users.espurna",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "main": "app.js",
   "dependencies": {
     "homey-log": "^1.0.6",
@@ -9,7 +9,7 @@
   },
   "scripts": {},
   "repository": {},
-  "author": "",
+  "author": "David Williamson",
   "license": "Apache-2.0",
   "bugs": {}
 }
