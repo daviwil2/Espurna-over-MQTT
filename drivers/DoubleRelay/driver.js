@@ -2,22 +2,13 @@
 
 'use strict';
 
-const Homey  = require('homey');
-const mqtt   = require('mqtt');
-const lib    = require('../../lib/driver.lib.js');
+const Homey       = require('homey');
+const DoubleRelay = require('../../lib/driver');
 
-/// add event handers for events triggered in the Homey.Driver class
-
-class DoubleRelay extends Homey.Driver {
+module.exports = class extends DoubleRelay {
 
   onInit(){
-    lib.onInit();
+    this.type = 'DoubleRelay';
   }; // onInit
 
-  onPair(socket){
-    lib.onPair(socket, 'DoubleRelay');
-  }; // onPair
-
-}; // class SingleRelay
-
-module.exports = DoubleRelay;
+};

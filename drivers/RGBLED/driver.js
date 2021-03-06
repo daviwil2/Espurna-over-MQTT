@@ -3,21 +3,12 @@
 'use strict';
 
 const Homey  = require('homey');
-const mqtt   = require('mqtt');
-const lib    = require('../../lib/driver.lib.js');
+const RGBLED = require('../../lib/driver');
 
-/// add event handers for events triggered in the Homey.Driver class
-
-class RGBLED extends Homey.Driver {
+module.exports = class extends RGBLED {
 
   onInit(){
-    lib.onInit();
+    this.type = 'RGBLED';
   }; // onInit
 
-  onPair(socket){
-    lib.onPair(socket, 'RGBLED');
-  }; // onPair
-
-}; // class SingleRelay
-
-module.exports = RGBLED;
+};
