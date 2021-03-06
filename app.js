@@ -16,20 +16,23 @@ class Espurna extends Homey.App {
 		// enable logging to sentry if a URL is defined as an environment variable
 		// if enabled, if this app crashes due to an uncaughtException or unhandledRejection, a crash report
 		// will automatically be sent to Sentry
-		this.homeyLog = (Homey.env.HOMEY_LOG_URL !== null) ? new Log({ homey: this.homey }) : undefined ;
+		this.homeyLog = (Homey.env.HOMEY_LOG_URL !== "") ? new Log({ homey: this.homey }) : undefined ;
 
-		// get the keys
+		// get the keys with the settings
 		var keys = ManagerSettings.getKeys();
 
-		// if we don't have keys for the settings, set to defaults
+		// if we don't have keys for the settings, set to defaults; try to read from environment variables first, falling back to hard-coded
+		// defaults if they're not available
 		if (keys.length == 0){
 
-			// use the default address and port number from env.json if available, if not use these default values
+			this.log('onInit() in app.js, initialising default settings');
+
+			// use the default address and port number from env.json if available, if not fall back to hard-coded default values
 			var defaultIP, defaultPort, defaultUsername, defaultPassword;
 
 			try {
-				defaultIP = Homey.env.MQTT_SERVER_DEFAULT_IP ? Homey.env.MQTT_SERVER_DEFAULT_IP : "192.168.1.1" ;
-				defaultPort = Homey.env.MQTT_SERVER_DEFAULT_PORT ? Homey.env.MQTT_SERVER_DEFAULT_PORT : "1833" ;
+				defaultIP       = Homey.env.MQTT_SERVER_DEFAULT_IP       ? Homey.env.MQTT_SERVER_DEFAULT_IP       : "192.168.1.1" ;
+				defaultPort     = Homey.env.MQTT_SERVER_DEFAULT_PORT     ? Homey.env.MQTT_SERVER_DEFAULT_PORT     : "1833" ;
 				defaultUsername = Homey.env.MQTT_SERVER_DEFAULT_USERNAME ? Homey.env.MQTT_SERVER_DEFAULT_USERNAME : null ;
 				defaultPassword = Homey.env.MQTT_SERVER_DEFAULT_PASSWORD ? Homey.env.MQTT_SERVER_DEFAULT_PASSWORD : null ;
 			}
@@ -57,6 +60,8 @@ class Espurna extends Homey.App {
 				}; // if
 
 			}; // for
+
+			this.log('onInit() in app.js, initialised default settings');
 
 		}; // if
 
