@@ -1,5 +1,5 @@
 {
-  "id": "Espurna-over-MQTT",
+  "id": "com.github.noreply.users.Espurna-over-MQTT",
   "version": "1.0.2",
   "compatibility": ">=2.0",
   "sdk": 2,
