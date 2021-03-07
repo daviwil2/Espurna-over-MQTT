@@ -21,6 +21,6 @@ Minimal server configuration is necessary: just the IP address and port number o
 - Add separate option (driver and assets etc.) for H801s controlling white LEDs: there is no way in a Homey app to dynamically disable a capability so even though you use the Advanced Settings to tell the app that it's controlling white LEDs the colour picker remains in the app
 - Support more Espurna devices as my willingness to suffer the interminable wait for items to arrive from Ali Express returns from its current level of zero
 ## License
-Copyright (C) 2016-2019 by David Williamson.
+Copyright (C) 2019-2021 by David Williamson.
 
 The source code is completely free and released under the [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0) license.
