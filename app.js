@@ -9,13 +9,15 @@ const { ManagerSettings } = require('homey');
 
 const { Log } = require('homey-log');
 
+var writeLogs = (process.env.DEBUG === '1') ? true : false ; // write logs using this.log if the App is running in debug mode
+
 class Espurna extends Homey.App {
 
 	onInit(){
 
-		// enable logging to sentry if a URL is defined as an environment variable
-		// if enabled, if this app crashes due to an uncaughtException or unhandledRejection, a crash report
-		// will automatically be sent to Sentry
+		// enable logging to sentry if enabled via a URL in an environment variable: if this app crashes due to an
+		// uncaughtException or unhandledRejection, homey-log will automatically send a crash report to Sentry
+		// (either https://sentry.io/for/javascript/ or https://develop.sentry.dev/self-hosted/)
 		this.homeyLog = (Homey.env.HOMEY_LOG_URL !== "") ? new Log({ homey: this.homey }) : undefined ;
 
 		// get the keys with the settings
@@ -25,7 +27,7 @@ class Espurna extends Homey.App {
 		// defaults if they're not available
 		if (keys.length == 0){
 
-			this.log('onInit() in app.js, initialising default settings');
+			if (writeLogs){ this.log('onInit() in app.js, initialising default settings') };
 
 			// use the default address and port number from env.json if available, if not fall back to hard-coded default values
 			var defaultIP, defaultPort, defaultUsername, defaultPassword;
@@ -61,7 +63,7 @@ class Espurna extends Homey.App {
 
 			}; // for
 
-			this.log('onInit() in app.js, initialised default settings');
+			if (writeLogs){ this.log('onInit() in app.js, initialised default settings') };
 
 		}; // if
 
