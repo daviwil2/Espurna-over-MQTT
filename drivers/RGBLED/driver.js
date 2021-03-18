@@ -7,8 +7,8 @@ const RGBLED = require('../../lib/driver');
 
 module.exports = class extends RGBLED {
 
-  onInit(){
-    this.type = 'RGBLED';
-  }; // onInit
+  getType(){
+    return 'RGBLED'
+  }; // getType()
 
 };

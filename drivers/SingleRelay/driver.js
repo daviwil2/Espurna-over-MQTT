@@ -7,8 +7,8 @@ const SingleRelay = require('../../lib/driver');
 
 module.exports = class extends SingleRelay {
 
-  onInit(){
-    this.type = 'SingleRelay';
-  }; // onInit
+  getType(){
+    return 'SingleRelay'
+  }; // getType()
 
 };
