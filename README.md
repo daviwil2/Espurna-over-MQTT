@@ -12,6 +12,20 @@ The H801 can be run to control either RGB LEDs on channels 1-3 or white LEDs on 
 The Sonoff Basic is a single relay in-line power switch and the Sonoff Dual is a dual relay.
 ## Server
 For the server I run [Eclipse Mosquitto™](https://mosquitto.org/) on a Mac mini server (running macOS 11 Big Sur) installed using [Homebrew](https://brew.sh/). Simply install Homebrew then `brew install mosquitto` to install the server. Mosquitto runs well on Linux or even a Raspberry Pi, and other MQTT server options are available: the MQTT client component used in the app is mature, stable and widely used so should connect to almost any server.
+
+When Mosquitto is installed on macOS the configuration is located under Homebrew's Cellar directory. For Mosquitto 2.0.8 on macOS running on Apple Silicon (M1) this will be in `/usr/local/Cellar/mosquitto/2.0.8/etc/mosquitto/mosquitto.conf`. If you're having problems connecting to the server edit this file and add the lines:
+
+> bind_address <address>
+> port 1883
+> listener port 1883
+> socket_domain ipv4
+> allow_anonymous true
+
+Where `address` is the IPv4 address of your server, e.g. `192.168.1.8`.
+
+This allows anonymous connections on the default port of `:1883` over IPv4, listening on the external IPv4 address for the server.
+
+The same basic configuration also works well on Linux systems including Armbian on Raspberry Pis.
 ## Server configuration
 Minimal server configuration is necessary: just the IP address and port number of the MQTT server. The app will pull defaults from the `env.json` file. If you want to use username and password authentication this is supported but SSL connections aren't.
 ## Still to do in a future release
