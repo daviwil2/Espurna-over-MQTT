@@ -15,7 +15,7 @@ For the server I run [Eclipse Mosquitto™](https://mosquitto.org/) on a Mac min
 
 When Mosquitto is installed on macOS the configuration is located under Homebrew's Cellar directory. For Mosquitto 2.0.8 on macOS running on Apple Silicon (M1) this will be in `/usr/local/Cellar/mosquitto/2.0.8/etc/mosquitto/mosquitto.conf`. If you're having problems connecting to the server edit this file and add the lines:
 
-> bind_address <address>
+> bind_address address
 > port 1883
 > listener port 1883
 > socket_domain ipv4
