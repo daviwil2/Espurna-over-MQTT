@@ -5,7 +5,7 @@
   "dependencies": {
     "homey-log": "^1.0.6",
     "is-ip": "^3.0.0",
-    "mqtt": "^4.0.0"
+    "mqtt": "^4.2.6"
   },
   "scripts": {},
   "repository": {},
