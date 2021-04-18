@@ -1,6 +1,6 @@
 {
   "id": "com.github.noreply.users.Espurna-over-MQTT",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "compatibility": ">=2.0",
   "sdk": 2,
   "brandColor": "#99965E",
@@ -12,7 +12,7 @@
   },
   "category": [ "lights", "appliances" ],
   "tags": {
-    "en": [ "espurna", "sonoff", "H801" ]
+    "en": [ "espurna", "sonoff", "H801", "MQTT" ]
   },
   "images": {
     "large": "/assets/images/large.png",
@@ -25,13 +25,30 @@
   },
   "contributors": {},
   "contributing": {},
-  "bugs": {},
+  "bugs": {
+    "url": "https://github.com/daviwil2/Espurna-over-MQTT/issues"
+  },
   "signals": {},
   "flow": {
+    "triggers": [
+      {
+        "id": "SingleRelayTurnedOn",
+        "title": { "en": "A single relay is turned on" }
+      }, {
+        "id": "SingleRelayTurnedOff",
+        "title": { "en": "A single relay is turned off" }
+      }
+    ],
+    "conditions": [
+      {
+        "id": "SingleRelayStatus",
+        "title": { "en": "The single relay is !{{on|off}}" }
+      }
+    ],
     "actions": [
       {
         "id": "SingleRelay_on",
-        "title": { "en": "The switch has been turned on"},
+        "title": { "en": "Turn the relay on"},
         "args": [
           {
             "type": "device",
@@ -42,7 +59,7 @@
       },
       {
         "id": "SingleRelay_off",
-        "title": { "en": "The switch has been turned off"},
+        "title": { "en": "Turn the relay off"},
         "args": [
           {
             "type": "device",
@@ -51,8 +68,7 @@
           }
         ]
       }
-    ],
-    "triggers": []
+    ]
   },
   "drivers": [
     {
